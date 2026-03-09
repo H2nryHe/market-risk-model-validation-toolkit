@@ -59,14 +59,14 @@ From [baseline_multi_asset_equal_weight_backtest_summary.csv](data/artifacts/bas
 
 ### Stress Testing Takeaway
 
-From [baseline_multi_asset_custom_stress_summary.csv](data/artifacts/baseline_multi_asset_custom_stress_summary.csv):
+From [baseline_multi_asset_equal_weight_stress_summary.csv](data/artifacts/baseline_multi_asset_equal_weight_stress_summary.csv):
 
 | Scenario | Portfolio PnL |
 | --- | ---: |
-| Equity selloff | -4.65% |
-| Inflation surprise | -4.20% |
-| Cross-asset mix | -3.45% |
-| Rates shock | -2.73% |
+| Equity selloff | -3.75% |
+| Inflation surprise | -3.50% |
+| Cross-asset mix | -2.75% |
+| Rates shock | -2.63% |
 
 The broad equity selloff is the largest loss scenario, driven primarily by `SPY` and `QQQ`.
 
@@ -77,7 +77,7 @@ These are the most useful recruiter-facing visuals in the repo:
 - ![Equal-weight cumulative return](reports/figures/baseline_multi_asset_equal_weight_cumulative_returns.png)
 - ![VaR and ES comparison](reports/figures/baseline_multi_asset_equal_weight_var_es_comparison.png)
 - ![VaR exceedance plot](reports/figures/baseline_multi_asset_equal_weight_exceedance_plot.png)
-- ![Stress scenario PnL](reports/figures/baseline_multi_asset_custom_stress_scenarios.png)
+- ![Stress scenario PnL](reports/figures/baseline_multi_asset_equal_weight_stress_scenarios.png)
 
 Suggested screenshots if you want to feature this project externally:
 
@@ -143,7 +143,7 @@ Primary generated outputs:
 - [data/artifacts/baseline_multi_asset_equal_weight_summary.csv](data/artifacts/baseline_multi_asset_equal_weight_summary.csv)
 - [data/artifacts/baseline_multi_asset_equal_weight_rolling_var_es.csv](data/artifacts/baseline_multi_asset_equal_weight_rolling_var_es.csv)
 - [data/artifacts/baseline_multi_asset_equal_weight_backtest_summary.csv](data/artifacts/baseline_multi_asset_equal_weight_backtest_summary.csv)
-- [data/artifacts/baseline_multi_asset_custom_stress_summary.csv](data/artifacts/baseline_multi_asset_custom_stress_summary.csv)
+- [data/artifacts/baseline_multi_asset_equal_weight_stress_summary.csv](data/artifacts/baseline_multi_asset_equal_weight_stress_summary.csv)
 - [reports/sample_validation_report.md](reports/sample_validation_report.md)
 
 ## Business Relevance
@@ -169,7 +169,6 @@ The main business value is not the exact ETF universe. It is the workflow discip
 - Relies on `yfinance`, which is suitable for prototyping but not production controls
 - Parametric VaR / ES assumes normal returns and is intentionally simplistic
 - Stress testing is deterministic and static, not path-dependent or liquidity-aware
-- The stress section uses a custom-weight portfolio while the core backtesting section uses the equal-weight baseline
 - The project is not presented as a regulatory capital engine or production monitoring framework
 
 ## Future Work
@@ -177,7 +176,6 @@ The main business value is not the exact ETF universe. It is the workflow discip
 - Add regime segmentation for calm versus stressed periods
 - Add filtered historical simulation or EVT-style tail modeling
 - Add factor-based and portfolio-level attribution for stress scenarios
-- Use a single portfolio consistently across risk, validation, and stress sections
 - Add automated report build and CI publishing
 
 ## Resume-Ready Bullets

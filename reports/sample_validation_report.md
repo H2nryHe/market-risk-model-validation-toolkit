@@ -102,31 +102,29 @@ This is a useful validation conclusion: the Gaussian model is serviceable as a s
 
 ## 5. Stress Testing Results
 
-To illustrate scenario contribution analysis, deterministic stress testing is run on a custom-weight portfolio variant:
+Stress testing is run on the same equal-weight baseline portfolio used in the risk and backtesting sections:
 
-- `SPY`: 35%
+- `SPY`: 25%
 - `QQQ`: 25%
 - `TLT`: 25%
-- `GLD`: 15%
-
-This variant is used only for the scenario section so the asset contribution effects are more visible than under a fully equal-weight book.
+- `GLD`: 25%
 
 Reference:
-- [Stress summary table](../data/artifacts/baseline_multi_asset_custom_stress_summary.csv)
-- [Stress contribution table](../data/artifacts/baseline_multi_asset_custom_stress_contributions.csv)
-- [Stress markdown summary](../data/artifacts/baseline_multi_asset_custom_stress_summary.md)
-- ![Stress scenario PnL](figures/baseline_multi_asset_custom_stress_scenarios.png)
+- [Stress summary table](../data/artifacts/baseline_multi_asset_equal_weight_stress_summary.csv)
+- [Stress contribution table](../data/artifacts/baseline_multi_asset_equal_weight_stress_contributions.csv)
+- [Stress markdown summary](../data/artifacts/baseline_multi_asset_equal_weight_stress_summary.md)
+- ![Stress scenario PnL](figures/baseline_multi_asset_equal_weight_stress_scenarios.png)
 
 Scenario outcomes:
 
 | Scenario | Portfolio PnL |
 | --- | ---: |
-| Equity selloff | -4.65% |
-| Inflation surprise | -4.20% |
-| Cross-asset mix | -3.45% |
-| Rates shock | -2.73% |
+| Equity selloff | -3.75% |
+| Inflation surprise | -3.50% |
+| Cross-asset mix | -2.75% |
+| Rates shock | -2.63% |
 
-The largest loss comes from the broad equity selloff scenario, driven mainly by `SPY` and `QQQ`. The inflation shock is also material because it combines weaker growth assets with a sharp drawdown in `TLT`, partially offset by `GLD`.
+The largest loss comes from the broad equity selloff scenario, driven mainly by `SPY` and `QQQ`. The inflation surprise remains material because the equal-weight allocation leaves the portfolio fully exposed to the bond selloff in `TLT` while only partially offsetting it with `GLD`.
 
 ## 6. Limitations
 
@@ -134,14 +132,12 @@ The largest loss comes from the broad equity selloff scenario, driven mainly by 
 - Data comes from a public source and is suitable for prototyping, not formal production controls.
 - Parametric VaR / ES assumes normal returns and therefore understates tail complexity.
 - Stress testing is deterministic and static; it does not include second-order effects, liquidity, or path dependency.
-- Risk and backtesting are shown on the equal-weight baseline portfolio, while the stress illustration uses a custom-weight variant for clearer contribution analysis.
 - No claims are made here about regulatory capital, production monitoring, or model governance completeness.
 
 ## 7. Next Steps
 
 - Add regime segmentation so exception behavior can be compared across calm and stressed periods.
 - Extend the VaR engine with filtered historical simulation or EVT-style tail modeling.
-- Run stress testing on the same baseline portfolio used in backtesting for a single-book validation memo.
 - Add portfolio-level attribution and factor-style scenario definitions.
 - Package this markdown output into a reproducible report build step.
 

@@ -19,5 +19,5 @@ def test_stage_configs_load_expected_defaults() -> None:
     assert data_config.tickers == ("SPY", "QQQ", "TLT", "GLD")
     assert portfolio_config.strategy == "equal_weight"
     assert risk_config.window == 250
-    assert stress_config.portfolio_name == "baseline_multi_asset_custom"
+    assert stress_config.portfolio_name == "baseline_multi_asset_equal_weight"
     assert validation_config.portfolio_name == "baseline_multi_asset_equal_weight"

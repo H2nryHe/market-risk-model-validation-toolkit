@@ -1,5 +1,5 @@
-portfolio_name: baseline_multi_asset_custom
-portfolio_config_path: configs/portfolios/custom_multi_asset.yaml
+portfolio_name: baseline_multi_asset_equal_weight
+portfolio_config_path: configs/portfolios/example_portfolio.yaml
 scenarios_path: configs/stress_scenarios/example_scenarios.yaml
 output_dir: data/artifacts
 figure_dir: reports/figures
