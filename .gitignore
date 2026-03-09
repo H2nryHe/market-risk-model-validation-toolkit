@@ -37,7 +37,6 @@ Thumbs.db
 data/raw/*
 data/processed/*
 data/artifacts/*
-reports/figures/*
 
 # Keep directory skeletons in git
 !data/raw/.gitkeep
