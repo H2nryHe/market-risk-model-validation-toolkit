@@ -1,0 +1,11 @@
+tickers:
+  - SPY
+  - QQQ
+  - TLT
+  - GLD
+start_date: "2018-01-01"
+end_date:
+spike_threshold: 0.15
+raw_dir: data/raw
+processed_dir: data/processed
+artifact_dir: data/artifacts

@@ -1,0 +1,29 @@
+scenarios:
+  - name: equity_selloff
+    description: Broad equity drawdown with modest safe-haven support.
+    shocks:
+      SPY: -0.08
+      QQQ: -0.10
+      TLT: 0.02
+      GLD: 0.01
+  - name: rates_shock
+    description: Sharp duration selloff with modest pressure on risk assets.
+    shocks:
+      SPY: -0.02
+      QQQ: -0.025
+      TLT: -0.05
+      GLD: -0.01
+  - name: cross_asset_mix
+    description: Cross-asset dislocation with equities down and partial flight to quality.
+    shocks:
+      SPY: -0.06
+      QQQ: -0.08
+      TLT: 0.02
+      GLD: 0.01
+  - name: inflation_surprise
+    description: Inflation shock with rates higher, gold firmer, and growth assets weaker.
+    shocks:
+      SPY: -0.04
+      QQQ: -0.07
+      TLT: -0.06
+      GLD: 0.03

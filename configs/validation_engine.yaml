@@ -1,0 +1,7 @@
+portfolio_name: baseline_multi_asset_equal_weight
+risk_table_path: data/artifacts/baseline_multi_asset_equal_weight_rolling_var_es.csv
+output_dir: data/artifacts
+figure_dir: reports/figures
+confidence_levels:
+  - 0.95
+  - 0.99

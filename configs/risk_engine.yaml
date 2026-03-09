@@ -1,0 +1,8 @@
+portfolio_name: baseline_multi_asset_equal_weight
+returns_path: data/artifacts/baseline_multi_asset_equal_weight_timeseries.csv
+output_dir: data/artifacts
+figure_dir: reports/figures
+window: 250
+confidence_levels:
+  - 0.95
+  - 0.99

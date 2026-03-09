@@ -1,0 +1,17 @@
+name: baseline_multi_asset_custom
+description: Custom-weight multi-asset portfolio with a mild equity tilt.
+strategy: custom_weight
+tickers:
+  - SPY
+  - QQQ
+  - TLT
+  - GLD
+weights:
+  SPY: 0.35
+  QQQ: 0.25
+  TLT: 0.25
+  GLD: 0.15
+returns_path: data/processed/returns.csv
+output_dir: data/artifacts
+figure_dir: reports/figures
+annualization_factor: 252
