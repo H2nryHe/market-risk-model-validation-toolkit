@@ -1,0 +1,226 @@
+{
+  "artifact_hashes": {
+    "monitoring_breaches_csv": "72596493535cb6745cad69c9a9877920b14c5d2d66dda380a10e3774182f2cae",
+    "monitoring_framework_comparison_csv": "2579f7a9e4a5f47f5788a218730eaf19217a415aa55094c219f9fc50338a6eb1",
+    "monitoring_history_csv": "19c67de981728cec0ae9a04d1d216f1d5849648233fbce0b2631362a7fc19dc0",
+    "monitoring_snapshot_csv": "7df7ba3187b5f8330fce8ba6067b46ac561dae38bb16c7a7d08e730779dcd6dd",
+    "remediation_log_csv": "f6459622d9cb856ecc2c45b6a352d94d2ccf966905a40aeb3f046dc187e9eec8"
+  },
+  "breach_counts_by_metric": {
+    "challenger_review": 2862,
+    "cluster": 238,
+    "conditional_coverage": 1538,
+    "dependence_watch": 1646,
+    "exception_rate": 1518,
+    "far_tail_performance_watch": 3284,
+    "high_vol_tail_escalation": 1942,
+    "kupiec": 1746,
+    "overall": 3299
+  },
+  "effective_date": "2026-08-14",
+  "final_validation_decision": null,
+  "finding_status": [
+    {
+      "finding_id": "MV-001",
+      "status": "OPEN"
+    },
+    {
+      "finding_id": "MV-002",
+      "status": "OPEN"
+    }
+  ],
+  "forecast_artifact_hash": "181bc00ad0eccecef6f47a0f757f3986ad11cc4950e4dd1f6d818efceb139567",
+  "framework_comparison": [
+    {
+      "amber_count": 290,
+      "confidence_level": 0.95,
+      "framework_version": "1.0",
+      "green_count": 99,
+      "insufficient_data_count": 84,
+      "longest_continuous_red_streak": 574,
+      "observation_count": 1804,
+      "red_count": 1331,
+      "red_episode_count": 28,
+      "red_fraction": 0.7378048780487805
+    },
+    {
+      "amber_count": 912,
+      "confidence_level": 0.95,
+      "framework_version": "1.1",
+      "green_count": 99,
+      "insufficient_data_count": 84,
+      "longest_continuous_red_streak": 231,
+      "observation_count": 1804,
+      "red_count": 709,
+      "red_episode_count": 11,
+      "red_fraction": 0.39301552106430154
+    },
+    {
+      "amber_count": 151,
+      "confidence_level": 0.99,
+      "framework_version": "1.0",
+      "green_count": 0,
+      "insufficient_data_count": 126,
+      "longest_continuous_red_streak": 527,
+      "observation_count": 1804,
+      "red_count": 1527,
+      "red_episode_count": 17,
+      "red_fraction": 0.8464523281596452
+    },
+    {
+      "amber_count": 518,
+      "confidence_level": 0.99,
+      "framework_version": "1.1",
+      "green_count": 0,
+      "insufficient_data_count": 126,
+      "longest_continuous_red_streak": 406,
+      "observation_count": 1804,
+      "red_count": 1160,
+      "red_episode_count": 6,
+      "red_fraction": 0.6430155210643016
+    }
+  ],
+  "framework_version_review": {
+    "active_version": "1.1",
+    "numeric_threshold_change": false,
+    "previous_version": "1.0",
+    "rationale": "Alert-saturation review preserved numerical thresholds and changed only metric roles and aggregation semantics.",
+    "v1_summary_hash": "356342b329dbd06758f1c4f4ed69f4b590519f39217020fc439c4df96b76c8c5",
+    "v1_thresholds_hash": "00a1056992b2895465a81845025ee392424343f260c42b38f970162b4a88a849"
+  },
+  "input_data_hash": "9e7934641e926d4fa075ba5d4b7c2a57911781244bd2b2b32d4f97dab622ddc8",
+  "latest_snapshot": [
+    {
+      "as_of_date": "2026-03-06",
+      "challenger_divergence_status": "GREEN",
+      "challenger_review_required": false,
+      "cluster_status": "GREEN",
+      "conditional_coverage_p_value_250": 0.03477832745049861,
+      "conditional_coverage_status": "RED",
+      "confidence_level": 0.95,
+      "data_quality_status": "GREEN",
+      "days_since_last_exception": 3.0,
+      "dependence_watch_status": "AMBER",
+      "exception_rate_status": "GREEN",
+      "exceptions_last_10d": 1,
+      "exceptions_last_5d": 1,
+      "far_tail_performance_watch": "GREEN",
+      "high_vol_tail_escalation": false,
+      "is_exception": false,
+      "kupiec_p_value_250": 0.8838996943306077,
+      "kupiec_status": "GREEN",
+      "max_challenger_divergence": 0.13605848338626722,
+      "mr001_es": 0.0158344012054956,
+      "mr001_var": 0.0124097972913986,
+      "mr002_divergence": 0.09139163885100651,
+      "mr002_var": 0.0112756455791289,
+      "mr003_divergence": 0.11615970364430009,
+      "mr003_var": 0.0138513156670533,
+      "mr004_divergence": 0.13605848338626722,
+      "mr004_var": 0.0107213390927999,
+      "open_findings": "MV-001;MV-002",
+      "overall_status": "AMBER",
+      "realized_loss": 0.0040086185865791,
+      "rolling_exception_rate_125": 0.048,
+      "rolling_exception_rate_250": 0.048,
+      "snapshot_is_live": false,
+      "snapshot_scope": "historical frozen-data snapshot, not live/current market-risk status",
+      "tail_watch_status": "GREEN",
+      "volatility_60d": 0.00801225902782599,
+      "volatility_regime": "HIGH_VOL"
+    },
+    {
+      "as_of_date": "2026-03-06",
+      "challenger_divergence_status": "RED",
+      "challenger_review_required": true,
+      "cluster_status": "GREEN",
+      "conditional_coverage_p_value_250": 0.061324500505478836,
+      "conditional_coverage_status": "AMBER",
+      "confidence_level": 0.99,
+      "data_quality_status": "GREEN",
+      "days_since_last_exception": 24.0,
+      "dependence_watch_status": "AMBER",
+      "exception_rate_status": "RED",
+      "exceptions_last_10d": 0,
+      "exceptions_last_5d": 0,
+      "far_tail_performance_watch": "RED",
+      "high_vol_tail_escalation": true,
+      "is_exception": false,
+      "kupiec_p_value_250": 0.1618549171960387,
+      "kupiec_status": "GREEN",
+      "max_challenger_divergence": 0.3479389217938138,
+      "mr001_es": 0.0207722577673881,
+      "mr001_var": 0.0179950469989955,
+      "mr002_divergence": 0.3479389217938138,
+      "mr002_var": 0.024256224249455,
+      "mr003_divergence": 0.08864289599088798,
+      "mr003_var": 0.0195901800784786,
+      "mr004_divergence": 0.022090396291084405,
+      "mr004_var": 0.01839256471848,
+      "open_findings": "MV-001;MV-002",
+      "overall_status": "RED",
+      "realized_loss": 0.0040086185865791,
+      "rolling_exception_rate_125": 0.008,
+      "rolling_exception_rate_250": 0.02,
+      "snapshot_is_live": false,
+      "snapshot_scope": "historical frozen-data snapshot, not live/current market-risk status",
+      "tail_watch_status": "RED",
+      "volatility_60d": 0.00801225902782599,
+      "volatility_regime": "HIGH_VOL"
+    }
+  ],
+  "limitations": [
+    "Historical replay on frozen validation data, not live/current monitoring.",
+    "Thresholds are project-specific controls, not regulatory numerical requirements.",
+    "Rolling 99% statistical monitoring has small expected exception counts over 250 observations.",
+    "Conditional-coverage tests may be low power or insufficient when exceptions are sparse.",
+    "Phase 6 data-quality controls are a blocking gate, not a substitute for clean market data.",
+    "Public ETF proxy portfolio and no real-time feed or institutional escalation process.",
+    "Findings remain open until Phase 8 closure/final-decision assessment."
+  ],
+  "monitoring_end": "2026-03-06",
+  "monitoring_scope": "historical frozen-data replay, not live/current market-risk status",
+  "monitoring_start": "2019-01-02",
+  "open_findings": [
+    "MV-001",
+    "MV-002"
+  ],
+  "phase": 7,
+  "project_disclaimer": "These thresholds are project-specific monitoring choices, not regulatory numerical requirements and not real-bank policy.",
+  "remediation_status": [
+    {
+      "finding_id": "MV-001",
+      "remediation_id": "RM-001",
+      "status": "IMPLEMENTED_PENDING_VALIDATION"
+    },
+    {
+      "finding_id": "MV-002",
+      "remediation_id": "RM-002",
+      "status": "IMPLEMENTED_PENDING_VALIDATION"
+    }
+  ],
+  "snapshot_is_live": false,
+  "status_counts_by_confidence": {
+    "0.95": {
+      "AMBER": 912,
+      "GREEN": 99,
+      "INSUFFICIENT_DATA": 84,
+      "RED": 709
+    },
+    "0.99": {
+      "AMBER": 518,
+      "INSUFFICIENT_DATA": 126,
+      "RED": 1160
+    }
+  },
+  "threshold_version": "1.1",
+  "volatility_calibration": {
+    "calibration_end": "2020-03-24",
+    "calibration_observations": 500,
+    "calibration_start": "2018-03-29",
+    "lower_threshold": 0.003910401927810824,
+    "methodology": "Trailing 60-day volatility thresholds calibrated on the first 500 valid rolling-volatility observations and then frozen for historical replay.",
+    "rolling_window": 60,
+    "upper_threshold": 0.006289984082968809
+  }
+}

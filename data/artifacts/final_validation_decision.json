@@ -1,0 +1,83 @@
+{
+  "closed_findings": [],
+  "decision": "RESTRICTED_USE",
+  "decision_comparison": {
+    "NOT_VALIDATED": "Rejected: implementation is correct and 95% unconditional coverage plus monitoring/challenger controls support meaningful restricted use.",
+    "RESTRICTED_USE": "Selected: the model remains useful for transparent baseline and limited internal monitoring roles, but 99% use must be narrowed and controlled.",
+    "VALIDATED": "Rejected: material unresolved High and Moderate findings remain.",
+    "VALIDATED_WITH_CONDITIONS": "Rejected: evidence does not support the full stated intended use with conditions alone, especially standalone 99% far-tail interpretation."
+  },
+  "decision_date": "2026-08-14",
+  "decision_rationale": "RESTRICTED_USE is selected because MR-001 is correctly implemented and useful as a transparent baseline, but the High 99% far-tail finding remains open, latest frozen 99% monitoring remains RED, and compensating controls reduce reliance risk without fixing the Gaussian tail root cause.",
+  "intended_use_assessed": "Daily internal market-risk monitoring, portfolio loss-threshold awareness, model comparison, and project risk reporting for the hypothetical ETF portfolio.",
+  "key_supporting_evidence": {
+    "challengers": "Historical and FHS improve 99% unconditional coverage but no challenger is universally superior.",
+    "conceptual": "Excess kurtosis and heavier empirical 99% loss tail than Gaussian-implied tail.",
+    "data_quality": "5/5 deterministic corruptions detected and blocked; no DQ finding opened.",
+    "implementation_verification": "464/464 independent comparisons matched; max absolute difference 0.0.",
+    "monitoring": "Latest frozen 99% v1.1 snapshot remains RED with challenger review and high-vol escalation.",
+    "mr001_95": "4.82% exception rate with Kupiec p-value 0.7281 but conditional-coverage p-value 0.0346.",
+    "mr001_99": "41/1804 exceptions, 2.27% rate, full-sample Kupiec/conditional coverage rejection."
+  },
+  "limitations": [
+    "Educational portfolio project, not a real bank validation.",
+    "Public ETF proxies and daily adjusted-close data.",
+    "One-day horizon and fixed frozen historical dataset.",
+    "Project-specific thresholds and no institutional escalation process.",
+    "No regulatory capital or live institutional-system claim."
+  ],
+  "model_id": "MR-001",
+  "model_version": "0.1.0",
+  "open_findings": [
+    "MV-001",
+    "MV-002"
+  ],
+  "remediation_status": [
+    {
+      "finding_id": "MV-001",
+      "remediation_id": "RM-001",
+      "status": "COMPLETED"
+    },
+    {
+      "finding_id": "MV-002",
+      "remediation_id": "RM-002",
+      "status": "COMPLETED"
+    }
+  ],
+  "required_controls": [
+    "Monitoring framework v1.1 with far-tail, dependence, challenger-review, volatility-context, and DQ gates.",
+    "Challenger comparison for 99% MR-001 interpretation.",
+    "High-volatility escalation when far-tail performance watch is AMBER or RED.",
+    "Phase 6 data-quality controls must block material corruptions before risk outputs are used.",
+    "Open findings MV-001/MV-002 must remain visible until root cause or governance closure is justified."
+  ],
+  "residual_risks": [
+    "Gaussian far-tail calibration weakness remains unresolved.",
+    "Exception clustering/temporal dependence remains unresolved.",
+    "99% empirical tail evidence is finite and regime-dependent.",
+    "Challengers have their own limitations and are not approved replacements.",
+    "Monitoring replay is frozen historical evidence, not live/current status."
+  ],
+  "restricted_or_prohibited_use": [
+    "MR-001 99% Gaussian VaR must not be used as a standalone far-tail risk measure.",
+    "99% outputs require challenger context, far-tail monitoring, and high-volatility escalation.",
+    "High-volatility periods require heightened review before relying on MR-001 tail estimates.",
+    "Not for regulatory capital, real trading limits, live institutional systems, or automated decisions."
+  ],
+  "revalidation_triggers": [
+    "Material methodology change.",
+    "Material change to intended use.",
+    "Material change to portfolio scope.",
+    "Sustained RED far-tail performance.",
+    "Repeated dependence or clustering escalation.",
+    "Persistent challenger divergence.",
+    "Material data-quality control failure.",
+    "Significant input-data or source change."
+  ],
+  "supported_use": [
+    "Transparent baseline one-day Gaussian VaR/ES reference for internal monitoring context.",
+    "95% loss-threshold awareness when interpreted with clustering/dependence monitoring.",
+    "Model comparison and risk reporting when challenger outputs and open findings are shown."
+  ],
+  "validation_id": "V2-MR-001-INITIAL"
+}

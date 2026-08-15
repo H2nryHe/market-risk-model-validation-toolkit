@@ -1,0 +1,120 @@
+{
+  "artifact_hashes": {
+    "data_quality_control_results_csv": "4490148e2be1f321462ff9f807b4b84746b3b087c9041135015b7c0a0e127161",
+    "data_quality_risk_impact_csv": "d2b197a74620ae7457ba9345e000d095f003c0399eaac5be715605bbf7131d61",
+    "data_quality_scenarios_csv": "375f3fe44fbeeb314d5b1d589b9b4316c40cc0a8b38898268f4e964f7cd1dca5",
+    "findings_csv": "70a34644bcf283ef93d453f3bae18929e17b2f5cbfa87612d0c355fdc9368fe3"
+  },
+  "control_detection_summary": {
+    "false_negative_count": 0,
+    "scenario_coverage_not_statistical_accuracy": true,
+    "scenarios_blocked": 5,
+    "scenarios_detected": 5
+  },
+  "controls": {
+    "date_alignment": "BLOCK when required date index or explicit shifted asset check fails",
+    "extreme_return": "BLOCK when absolute single-period return > 15.00%",
+    "missingness": "BLOCK when required price observations are missing",
+    "price_validity": "BLOCK when prices are non-finite or non-positive",
+    "staleness": "BLOCK when consecutive unchanged prices >= 3"
+  },
+  "data_quality_finding_opened": false,
+  "final_validation_decision": null,
+  "formal_findings_opened": [
+    "MV-001",
+    "MV-002"
+  ],
+  "input_price_hash": "555bb981773cc26ab2c1ab96a2b961e3e80f764924693ca78e5289b9511f46c6",
+  "input_price_path": "data/processed/adjusted_close.csv",
+  "input_returns_hash": "76116af57c526231c62fe83ae2e26e8be41bc5a28a418bbdef5be79fd8b1b08e",
+  "input_returns_path": "data/processed/returns.csv",
+  "limitations": [
+    "Synthetic deterministic perturbations are designed control tests, not a statistical sample of vendor errors.",
+    "Public ETF proxy data are used instead of production market data.",
+    "Control thresholds are project choices, not regulatory requirements.",
+    "Risk impact is measured as if corrupted data were allowed downstream even when controls block it.",
+    "Phase 6 defines recommendations but does not execute remediation or ongoing monitoring."
+  ],
+  "material_impact_summary": {
+    "DQ-01": false,
+    "DQ-02": false,
+    "DQ-03": true,
+    "DQ-04": false,
+    "DQ-05": true
+  },
+  "phase": 6,
+  "project_thresholds": {
+    "material_relative_var_change": 0.1,
+    "threshold_interpretation": "project governance indicator, not regulatory requirement",
+    "threshold_source": "configs/validation/validation_plan.yaml"
+  },
+  "scenario_count": 5,
+  "scenario_results": [
+    {
+      "asset": "SPY",
+      "blocked": true,
+      "detected": true,
+      "expected_control": "missingness",
+      "false_negative": false,
+      "largest_absolute_relative_var_change": 0.020529648144261163,
+      "largest_challenger_absolute_relative_var_change": 0.020529648144261163,
+      "material_var_impact_if_allowed": false,
+      "risk_pipeline_allowed": false,
+      "scenario_id": "DQ-01",
+      "scenario_name": "Missing observation block"
+    },
+    {
+      "asset": "TLT",
+      "blocked": true,
+      "detected": true,
+      "expected_control": "staleness",
+      "false_negative": false,
+      "largest_absolute_relative_var_change": 0.006161462283353993,
+      "largest_challenger_absolute_relative_var_change": 0.006161462283353993,
+      "material_var_impact_if_allowed": false,
+      "risk_pipeline_allowed": false,
+      "scenario_id": "DQ-02",
+      "scenario_name": "Stale price sequence"
+    },
+    {
+      "asset": "QQQ",
+      "blocked": true,
+      "detected": true,
+      "expected_control": "extreme_return",
+      "false_negative": false,
+      "largest_absolute_relative_var_change": 160.23571989626782,
+      "largest_challenger_absolute_relative_var_change": 116.80146943688152,
+      "material_var_impact_if_allowed": true,
+      "risk_pipeline_allowed": false,
+      "scenario_id": "DQ-03",
+      "scenario_name": "Extreme bad print"
+    },
+    {
+      "asset": "GLD",
+      "blocked": true,
+      "detected": true,
+      "expected_control": "date_alignment",
+      "false_negative": false,
+      "largest_absolute_relative_var_change": 0.08876285232243179,
+      "largest_challenger_absolute_relative_var_change": 0.08876285232243179,
+      "material_var_impact_if_allowed": false,
+      "risk_pipeline_allowed": false,
+      "scenario_id": "DQ-04",
+      "scenario_name": "Cross-asset date misalignment"
+    },
+    {
+      "asset": "SPY",
+      "blocked": true,
+      "detected": true,
+      "expected_control": "extreme_return",
+      "false_negative": false,
+      "largest_absolute_relative_var_change": 0.664071023831847,
+      "largest_challenger_absolute_relative_var_change": 0.3260253347687879,
+      "material_var_impact_if_allowed": true,
+      "risk_pipeline_allowed": false,
+      "scenario_id": "DQ-05",
+      "scenario_name": "Corporate-action-like discontinuity"
+    }
+  ],
+  "scenario_selection_rule": "deterministic fixed-position rule on frozen price sample: DQ-01 begins at 40%, DQ-02 begins at 50%, DQ-03 occurs at 60%, DQ-04 begins at 70%, DQ-05 occurs at 80%; dates are not selected based on impact"
+}

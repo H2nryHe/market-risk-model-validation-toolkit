@@ -1,0 +1,62 @@
+threshold_version: "1.1"
+effective_date: "2026-08-14"
+framework_type: "educational project monitoring controls"
+project_disclaimer: "These thresholds are project-specific monitoring choices, not regulatory numerical requirements and not real-bank policy."
+version_change_note: "Version 1.1 preserves all numerical thresholds from 1.0 and changes only metric roles and aggregation semantics after alert-saturation review."
+
+metric_roles:
+  hard_performance_signals:
+    - rolling_exception_rate
+    - kupiec_coverage
+    - dependence_watch
+    - blocking_data_quality_status
+  contextual_challenge_signals:
+    - challenger_divergence
+    - volatility_regime
+  aggregation_semantics:
+    challenger_divergence: "Material methodology disagreement requiring review; not proof that MR-001 has definitively failed."
+    volatility_regime: "Causal context for escalation priority; high volatility alone does not create RED."
+    far_tail_performance_watch: "99% performance watch driven by MR-001 exception-rate and Kupiec evidence; challenger disagreement can raise AMBER review but not hard RED by itself."
+    dependence_watch: "Combines conditional coverage and recent clustering so one noisy statistical metric does not dominate without context."
+
+rolling_windows:
+  exception_short: 125
+  exception_long: 250
+  statistical: 250
+
+exception_rate:
+  multiplier_amber: 1.25
+  multiplier_red: 1.50
+  rationale: "Early-warning traffic-light bands relative to the nominal VaR tail probability; raw counts and rates are retained."
+
+statistical_tests:
+  red_p_value: 0.05
+  amber_p_value: 0.10
+  min_exception_count_for_dependence_test: 5
+  rationale: "0.05 statistical significance comes from Phase 1; 0.10 is a Phase 7 early-warning project threshold."
+
+recent_cluster:
+  lookback_days: 10
+  amber_exception_count: 2
+  red_exception_count: 3
+  rationale: "Recent clustering escalation heuristic; not a replacement for Christoffersen conditional coverage."
+
+challenger_divergence:
+  amber_relative_difference: 0.15
+  red_relative_difference: 0.25
+  provenance: "Unchanged from Phase 1 challenger divergence thresholds."
+
+volatility_regime:
+  rolling_window: 60
+  calibration_observations: 500
+  lower_quantile: 0.25
+  upper_quantile: 0.75
+  methodology: "Causal monitoring regime thresholds use only the first 500 valid trailing 60-day volatility observations and remain frozen."
+
+data_quality:
+  missingness_status: "BLOCK when required price observations are missing."
+  staleness_consecutive_unchanged_threshold: 3
+  extreme_return_threshold: 0.15
+  date_alignment_status: "BLOCK when required date index or explicit shifted asset check fails."
+  price_validity_status: "BLOCK when prices are non-finite or non-positive."
+  provenance: "Reuses Phase 6 data-quality controls and the existing 15% suspicious-return project threshold."

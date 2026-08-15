@@ -1,185 +1,81 @@
-# Market Risk / Model Validation Toolkit
+# Bank-Style Market Risk Model Validation & Governance Lab
 
-Python portfolio project that simulates a bank-style market risk and model validation workflow for a liquid multi-asset book. The repository ingests public market data, builds transparent ETF-based portfolios, estimates rolling historical and parametric VaR / ES, backtests those forecasts with coverage and independence tests, runs deterministic stress scenarios, and packages the results into report-ready artifacts.
+Educational portfolio project for market risk model validation. It builds a full validation lifecycle around MR-001, a rolling Gaussian VaR / Expected Shortfall model for a hypothetical SPY / QQQ / TLT / GLD portfolio. It is not for live institutional use, regulatory capital, or compliance claims.
 
-## Why This Matters
+## What This Project Demonstrates
 
-Market risk and model validation roles are not just about fitting models. They require the ability to:
+- Independent implementation verification inside a single repository
+- Conceptual challenge of Gaussian tail assumptions
+- Challenger benchmarking against historical, EWMA, and filtered historical methods
+- Outcomes analysis across frequency, clustering, severity, and volatility regimes
+- Deterministic market-data quality failure testing
+- Formal findings, remediation tracking, monitoring, and final validation decisioning
 
-- prepare and sanity-check market data
-- turn positions into portfolio-level risk measures
-- explain model assumptions clearly
-- test whether VaR forecasts actually perform as intended
-- communicate weaknesses, not just outputs
+## Validation Case
 
-This project is designed to show those skills in a recruiter-friendly way. It focuses on transparent methodology, reproducible outputs, and validation-style interpretation rather than black-box modeling or inflated production claims.
+MR-001 estimates one-day 95% and 99% VaR / ES under a rolling Gaussian return assumption. The validation question is whether that model is fit for daily internal market-risk monitoring, portfolio loss-threshold awareness, model comparison, and project risk reporting for the hypothetical portfolio.
 
-## What The Repo Does
+## Key Findings
 
-- Downloads and validates daily adjusted-close data for `SPY`, `QQQ`, `TLT`, and `GLD`
-- Builds equal-weight and custom-weight portfolios from a clean aligned return panel
-- Computes rolling one-day historical and Gaussian VaR / ES at 95% and 99%
-- Backtests VaR with exception counts, Kupiec coverage, and Christoffersen conditional coverage
-- Runs deterministic stress scenarios with asset-level contribution breakdowns
-- Produces markdown- and CSV-friendly outputs suitable for a validation memo
-- Includes unit and integration tests across the full workflow
+- Independent verification matched 464/464 calculations with zero maximum absolute difference.
+- MR-001 99% Gaussian VaR recorded 41/1804 exceptions, a 2.27% exception rate versus a 1% nominal tail.
+- MR-001 95% exception frequency is close to nominal at 4.82%, but exceptions are clustered.
+- HIGH_VOL 99% exception rate is 3.43%, with concentration ratio 1.51.
+- Historical and FHS challengers improve some 99% coverage dimensions but retain dependence and finite-tail limitations.
+- Data-quality controls detected and blocked 5/5 injected data failures with 0 false negatives.
 
-## Sample Results
+## Validation Lifecycle
 
-### Baseline Equal-Weight Portfolio
+Inventory -> Conceptual Soundness -> Implementation Verification -> Challengers -> Outcomes -> Sensitivity -> Data Quality -> Findings -> Monitoring -> Final Decision
 
-From [baseline_multi_asset_equal_weight_summary.csv](data/artifacts/baseline_multi_asset_equal_weight_summary.csv):
+## Final Validation Decision
 
-| Metric | Value |
-| --- | ---: |
-| Annualized return | 12.98% |
-| Annualized volatility | 12.26% |
-| Sharpe ratio | 1.06 |
-| Max drawdown | -25.15% |
+Decision: **RESTRICTED_USE**.
 
-### VaR / ES Snapshot
+Supported use: transparent baseline one-day Gaussian VaR / ES reference, model comparison, and limited internal monitoring with visible caveats.
 
-From [baseline_multi_asset_equal_weight_risk_summary.csv](data/artifacts/baseline_multi_asset_equal_weight_risk_summary.csv):
+Restricted use: MR-001 99% Gaussian VaR must not be used as a standalone far-tail risk measure. 99% interpretation requires challenger context, v1.1 monitoring, data-quality gates, and high-volatility escalation. The latest monitoring snapshot is historical frozen-data evidence as of 2026-03-06, not live/current status.
 
-| Confidence | Metric | Historical | Parametric |
-| --- | --- | ---: | ---: |
-| 95% | Mean VaR | 1.157% | 1.210% |
-| 95% | Mean ES | 1.716% | 1.530% |
-| 99% | Mean VaR | 2.080% | 1.732% |
-| 99% | Mean ES | 2.500% | 1.992% |
-
-### Backtesting Takeaway
-
-From [baseline_multi_asset_equal_weight_backtest_summary.csv](data/artifacts/baseline_multi_asset_equal_weight_backtest_summary.csv):
-
-- Historical VaR at 95% is the strongest result: exception frequency is close to target and conditional coverage is not rejected.
-- Parametric VaR at 95% has acceptable coverage but shows exception clustering.
-- Both 99% models underperform.
-- Parametric VaR at 99% is the weakest specification, with `41` exceptions over `1804` observations versus an expected `1%` tail rate.
-
-### Stress Testing Takeaway
-
-From [baseline_multi_asset_equal_weight_stress_summary.csv](data/artifacts/baseline_multi_asset_equal_weight_stress_summary.csv):
-
-| Scenario | Portfolio PnL |
-| --- | ---: |
-| Equity selloff | -3.75% |
-| Inflation surprise | -3.50% |
-| Cross-asset mix | -2.75% |
-| Rates shock | -2.63% |
-
-The broad equity selloff is the largest loss scenario, driven primarily by `SPY` and `QQQ`.
-
-## Figures
-
-These are the most useful recruiter-facing visuals in the repo:
-
-- ![Equal-weight cumulative return](reports/figures/baseline_multi_asset_equal_weight_cumulative_returns.png)
-- ![VaR and ES comparison](reports/figures/baseline_multi_asset_equal_weight_var_es_comparison.png)
-- ![VaR exceedance plot](reports/figures/baseline_multi_asset_equal_weight_exceedance_plot.png)
-- ![Stress scenario PnL](reports/figures/baseline_multi_asset_equal_weight_stress_scenarios.png)
-
-Suggested screenshots if you want to feature this project externally:
-
-1. The VaR / ES comparison chart
-2. The exceedance plot
-3. The stress scenario bar chart
-4. A cropped view of [reports/sample_validation_report.md](reports/sample_validation_report.md)
-
-## Report
-
-The best single-file walkthrough is the validation memo:
-
-- [Sample validation report](reports/sample_validation_report.md)
-
-A reviewer should be able to understand the project from that report alone without reading source code first.
-
-## Repo Structure
+## Architecture
 
 ```text
-.
-├── configs/                  # Portfolio, risk, validation, and stress YAML configs
-├── data/
-│   ├── raw/                  # Raw downloaded prices and metadata
-│   ├── processed/            # Clean aligned price and return panels
-│   └── artifacts/            # CSV / markdown outputs from each stage
-├── reports/
-│   ├── figures/              # Recruiter-facing charts
-│   └── sample_validation_report.md
-├── src/market_risk_toolkit/
-│   ├── data/                 # Ingestion and validation pipeline
-│   ├── portfolio/            # Portfolio construction and summary stats
-│   ├── risk/                 # Rolling VaR / ES engine
-│   ├── validation/           # Backtesting and model validation tests
-│   └── stress/               # Deterministic scenario engine
-└── tests/                    # Unit and integration coverage
+configs/                  # Data, model, validation, monitoring, stress configs
+governance/               # Inventory, materiality, findings, remediation
+src/market_risk_toolkit/  # Data, portfolio, risk, validation, DQ, monitoring code
+data/artifacts/           # Deterministic CSV/JSON validation evidence
+reports/                  # Executive summary, final report, monitoring report
+tests/                    # Unit, integration, governance, and consistency tests
 ```
 
-## Setup
+## Reproduce
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
 pip install -r requirements.txt
-pytest
+pytest -q
 ```
 
-The project uses a `src/` layout and installs in editable mode through [requirements.txt](requirements.txt).
+Core tests are deterministic and do not require live yfinance access. The frozen V2 artifacts use a local development data cutoff rather than an open-ended market-data refresh.
 
-## Run The Full Workflow
+## Reports and Artifacts
 
-```bash
-python -m market_risk_toolkit.data --config configs/data_pipeline.yaml
-python -m market_risk_toolkit.portfolio --config configs/portfolios/example_portfolio.yaml
-python -m market_risk_toolkit.risk --config configs/risk_engine.yaml
-python -m market_risk_toolkit.validation --config configs/validation_engine.yaml
-python -m market_risk_toolkit.stress --config configs/stress_engine.yaml
-```
-
-Primary generated outputs:
-
-- [data/artifacts/data_validation_summary.json](data/artifacts/data_validation_summary.json)
-- [data/artifacts/baseline_multi_asset_equal_weight_summary.csv](data/artifacts/baseline_multi_asset_equal_weight_summary.csv)
-- [data/artifacts/baseline_multi_asset_equal_weight_rolling_var_es.csv](data/artifacts/baseline_multi_asset_equal_weight_rolling_var_es.csv)
-- [data/artifacts/baseline_multi_asset_equal_weight_backtest_summary.csv](data/artifacts/baseline_multi_asset_equal_weight_backtest_summary.csv)
-- [data/artifacts/baseline_multi_asset_equal_weight_stress_summary.csv](data/artifacts/baseline_multi_asset_equal_weight_stress_summary.csv)
-- [reports/sample_validation_report.md](reports/sample_validation_report.md)
-
-## Business Relevance
-
-This repo is most relevant for:
-
-- Market Risk Analyst / Market Risk Quant roles
-- Model Validation / Model Risk roles
-- Quantitative Risk Analyst positions
-- Risk Strats / Risk Analytics teams
-
-The main business value is not the exact ETF universe. It is the workflow discipline:
-
-- explicit model assumptions
-- reproducible calculations
-- testable code
-- interpretable diagnostics
-- willingness to show where a model fails
+- [Executive summary](reports/executive_summary.md)
+- [Full V2 validation report](reports/v2_validation_report.md)
+- [Monitoring report](reports/monitoring_report.md)
+- [Model inventory](governance/model_inventory.csv)
+- [Findings registry](governance/findings.csv)
+- [Remediation log](governance/remediation_log.csv)
+- [Final validation decision JSON](data/artifacts/final_validation_decision.json)
+- [Release metrics registry](data/artifacts/release_metrics.json)
 
 ## Limitations
 
-- Uses public ETF proxies instead of real desk positions or sensitivities
-- Relies on `yfinance`, which is suitable for prototyping but not production controls
-- Parametric VaR / ES assumes normal returns and is intentionally simplistic
-- Stress testing is deterministic and static, not path-dependent or liquidity-aware
-- The project is not presented as a regulatory capital engine or production monitoring framework
-
-## Future Work
-
-- Add regime segmentation for calm versus stressed periods
-- Add filtered historical simulation or EVT-style tail modeling
-- Add factor-based and portfolio-level attribution for stress scenarios
-- Add automated report build and CI publishing
-
-## Resume-Ready Bullets
-
-- Built a Python market risk toolkit for a multi-asset ETF portfolio with rolling historical and parametric VaR / ES estimation, formal backtesting, and deterministic stress testing.
-- Implemented VaR validation using exception analysis, Kupiec coverage, and Christoffersen conditional coverage tests, showing where Gaussian tail assumptions break down.
-- Designed config-driven data, portfolio, risk, validation, and stress workflows with reproducible CSV and markdown artifacts for report-ready risk communication.
+- Educational portfolio project using public ETF proxies
+- Project-level independent reference implementation, not organizational independence
+- One-day horizon and daily adjusted-close data
+- Fixed historical dataset and finite empirical tails
+- Project-specific monitoring thresholds
+- No real institutional approval authority
+- No regulatory capital, live institutional use, or compliance claim

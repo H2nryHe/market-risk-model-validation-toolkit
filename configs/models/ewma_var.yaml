@@ -1,0 +1,8 @@
+model_id: MR-003
+estimation_window: 250
+lambda: 0.94
+seed_window: 20
+mean_assumption: zero
+confidence_levels:
+  - 0.95
+  - 0.99

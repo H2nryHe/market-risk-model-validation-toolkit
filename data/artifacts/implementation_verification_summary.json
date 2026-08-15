@@ -1,0 +1,89 @@
+{
+  "by_confidence_level": {
+    "0.95": {
+      "comparison_count": 232,
+      "match_count": 232,
+      "max_absolute_difference": 0.0,
+      "mean_absolute_difference": 0.0,
+      "mismatch_count": 0
+    },
+    "0.99": {
+      "comparison_count": 232,
+      "match_count": 232,
+      "max_absolute_difference": 0.0,
+      "mean_absolute_difference": 0.0,
+      "mismatch_count": 0
+    }
+  },
+  "by_metric": {
+    "es": {
+      "comparison_count": 232,
+      "match_count": 232,
+      "max_absolute_difference": 0.0,
+      "mean_absolute_difference": 0.0,
+      "mismatch_count": 0
+    },
+    "var": {
+      "comparison_count": 232,
+      "match_count": 232,
+      "max_absolute_difference": 0.0,
+      "mean_absolute_difference": 0.0,
+      "mismatch_count": 0
+    }
+  },
+  "by_model": {
+    "gaussian": {
+      "comparison_count": 232,
+      "match_count": 232,
+      "max_absolute_difference": 0.0,
+      "mean_absolute_difference": 0.0,
+      "mismatch_count": 0
+    },
+    "historical": {
+      "comparison_count": 232,
+      "match_count": 232,
+      "max_absolute_difference": 0.0,
+      "mean_absolute_difference": 0.0,
+      "mismatch_count": 0
+    }
+  },
+  "case_count": 58,
+  "comparison_count": 464,
+  "developer_module": "market_risk_toolkit.risk.metrics",
+  "final_validation_decision": null,
+  "forbidden_import_check": {
+    "checked_files": [
+      "src/market_risk_toolkit/validation/independent/__init__.py",
+      "src/market_risk_toolkit/validation/independent/gaussian_reference.py",
+      "src/market_risk_toolkit/validation/independent/historical_reference.py"
+    ],
+    "forbidden_import_prefixes": [
+      "market_risk_toolkit.risk.metrics",
+      "market_risk_toolkit.risk"
+    ],
+    "passed": true,
+    "violations": []
+  },
+  "implementation_conclusion": "Implementation verification passed within the predeclared numerical tolerance.",
+  "input_data_hash": "9e7934641e926d4fa075ba5d4b7c2a57911781244bd2b2b32d4f97dab622ddc8",
+  "input_data_path": "data/artifacts/baseline_multi_asset_equal_weight_timeseries.csv",
+  "limitations": [
+    "Verification tests implementation consistency with stated formulas, not model conceptual soundness.",
+    "Historical quantiles use NumPy/Pandas linear interpolation convention.",
+    "Frozen portfolio windows are deterministic and evenly spaced, not exhaustive.",
+    "No final validation decision is assigned in Phase 3."
+  ],
+  "match_count": 464,
+  "match_fraction": 1.0,
+  "max_absolute_difference": 0.0,
+  "mean_absolute_difference": 0.0,
+  "mismatch_count": 0,
+  "model_id": "MR-001",
+  "reference_modules": [
+    "market_risk_toolkit.validation.independent.gaussian_reference",
+    "market_risk_toolkit.validation.independent.historical_reference"
+  ],
+  "required_match_fraction": 1.0,
+  "tolerance": 1e-10,
+  "validation_id": "V2-MR-001-INITIAL"
+}

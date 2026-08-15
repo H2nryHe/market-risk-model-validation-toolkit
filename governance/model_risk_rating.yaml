@@ -1,0 +1,48 @@
+model_id: MR-001
+assessment_version: "v2-phase-1"
+framework_type: "educational_project_specific_hypothetical_model_risk_framework"
+rating_scale:
+  allowed_values:
+    - Low
+    - Medium
+    - High
+  disclaimer: "The Low/Medium/High scale is a portfolio-project convention, not a Federal Reserve, OCC, FDIC, Basel Committee, or real-bank prescribed materiality scale."
+hypothetical_intended_use:
+  description: "Daily internal market-risk monitoring, portfolio loss-threshold awareness, model comparison, and project risk reporting for a hypothetical liquid multi-asset portfolio."
+  exclusions:
+    - "not regulatory capital"
+    - "not a live institutional model"
+    - "not an actual institutional risk limit system"
+    - "not regulator-approved"
+    - "not a real institutional approval authority"
+business_impact:
+  rating: High
+  rationale: "A material understatement of portfolio tail risk could affect internal risk interpretation and escalation decisions in the project scenario."
+model_complexity:
+  rating: Medium
+  rationale: "Gaussian VaR/ES is transparent and formula-driven, but rolling estimation, tail assumptions, and ES interpretation require validation discipline."
+model_reliance:
+  rating: High
+  rationale: "The model under validation is assumed to support recurring daily risk monitoring and comparison reporting within the project scenario."
+data_dependency:
+  rating: Medium
+  rationale: "Outputs depend on adjusted ETF price history, clean date alignment, and return construction from a public data source."
+known_limitations:
+  rating: High
+  rationale: "The Gaussian return assumption can understate far-tail losses and exception clustering for the V1 portfolio sample."
+control_strength:
+  rating: Medium
+  rationale: "V1 has deterministic tests and artifact outputs, while V2 validation governance, challengers, data-quality impact analysis, findings, and monitoring are not yet complete."
+overall_materiality:
+  rating: High
+  rationale: "High within this educational project because MR-001 is the primary model under validation and tail-risk understatement could affect hypothetical internal monitoring conclusions."
+rationale:
+  - "Materiality is project-specific and tied to the hypothetical intended use."
+  - "No agency numerical materiality scale is being reproduced."
+  - "No real institutional approval authority is claimed."
+explicit_exclusions:
+  - "This framework is not Federal Reserve prescribed."
+  - "This framework is not OCC prescribed."
+  - "This framework is not FDIC prescribed."
+  - "This framework is not a real bank policy."
+  - "This assessment does not approve or validate MR-001."

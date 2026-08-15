@@ -24,6 +24,12 @@ htmlcov/
 .env
 .env.*
 
+# Local V2 project-control files
+PROJECT_SPEC.md
+PROJECT_V2_SPEC.md
+V2_STATUS.md
+local_v2_baseline/
+
 # Jupyter
 .ipynb_checkpoints/
 
@@ -37,6 +43,20 @@ Thumbs.db
 data/raw/*
 data/processed/*
 data/artifacts/*
+
+# Curated public validation evidence
+!data/artifacts/final_validation_decision.json
+!data/artifacts/release_metrics.json
+!data/artifacts/finding_closure_assessment.csv
+!data/artifacts/conceptual_soundness_summary.json
+!data/artifacts/implementation_verification_summary.json
+!data/artifacts/model_comparison.csv
+!data/artifacts/challenger_model_summary.json
+!data/artifacts/sensitivity_summary.json
+!data/artifacts/data_quality_summary.json
+!data/artifacts/monitoring_snapshot.csv
+!data/artifacts/monitoring_summary.json
+!data/artifacts/monitoring_framework_comparison.csv
 
 # Keep directory skeletons in git
 !data/raw/.gitkeep

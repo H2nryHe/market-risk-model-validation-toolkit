@@ -1,0 +1,5 @@
+framework_version,confidence_level,green_count,amber_count,red_count,insufficient_data_count,observation_count,red_fraction,longest_continuous_red_streak,red_episode_count
+1.0,0.95,99,290,1331,84,1804,0.7378048780487805,574,28
+1.1,0.95,99,912,709,84,1804,0.39301552106430154,231,11
+1.0,0.99,0,151,1527,126,1804,0.8464523281596452,527,17
+1.1,0.99,0,518,1160,126,1804,0.6430155210643016,406,6

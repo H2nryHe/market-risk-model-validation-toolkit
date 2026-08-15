@@ -1,0 +1,63 @@
+{
+  "challengers_99": {
+    "mr002_exception_rate": 0.0149667405764966,
+    "mr003_exception_rate": 0.0199556541019955,
+    "mr004_exception_rate": 0.0133037694013303
+  },
+  "conceptual": {
+    "empirical_99_loss_quantile": 0.020390587241545202,
+    "excess_kurtosis": 7.55250943007162,
+    "gaussian_99_loss_quantile": 0.017459562954585547
+  },
+  "data_quality": {
+    "blocked": 5,
+    "detected": 5,
+    "false_negatives": 0,
+    "largest_material_impact_examples": [
+      {
+        "confidence_level": 0.99,
+        "model_id": "MR-001",
+        "relative_var_change": 160.23571989626782,
+        "risk_pipeline_allowed": false,
+        "scenario_id": "DQ-03"
+      },
+      {
+        "confidence_level": 0.95,
+        "model_id": "MR-001",
+        "relative_var_change": 0.664071023831847,
+        "risk_pipeline_allowed": false,
+        "scenario_id": "DQ-05"
+      }
+    ],
+    "scenarios": 5
+  },
+  "final_decision": "RESTRICTED_USE",
+  "implementation_verification": {
+    "comparisons": 464,
+    "match_fraction": 1.0,
+    "max_absolute_difference": 0.0
+  },
+  "monitoring_latest": {
+    "as_of_date": "2026-03-06",
+    "mr001_95_status": "AMBER",
+    "mr001_99_status": "RED",
+    "snapshot_scope": "historical frozen-data snapshot, not live/current market-risk status"
+  },
+  "mr001_95": {
+    "conditional_coverage_p_value": 0.0345660620036216,
+    "exception_count": 87,
+    "exception_rate": 0.0482261640798226,
+    "kupiec_p_value": 0.7280996761073351,
+    "max_cluster_length": 9,
+    "observation_count": 1804
+  },
+  "mr001_99": {
+    "exception_count": 41,
+    "exception_rate": 0.0227272727272727,
+    "high_vol_concentration_ratio": 1.5111111111111108,
+    "high_vol_exception_rate": 0.0343434343434343,
+    "observation_count": 1804,
+    "realized_loss_to_es_ratio": 1.2936004331737427
+  },
+  "test_count": 179
+}

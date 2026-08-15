@@ -1,0 +1,80 @@
+{
+  "candidate_concern": "Gaussian tail assumptions may be materially weak during high-volatility or fat-tail periods; later outcomes and challenger analysis should test this.",
+  "date_range": {
+    "end": "2026-03-06",
+    "start": "2018-01-03"
+  },
+  "distribution": {
+    "empirical_1pct_return_quantile": -0.02039058724154517,
+    "empirical_5pct_return_quantile": -0.011842830932508465,
+    "excess_kurtosis": 7.55250943007162,
+    "gaussian_1pct_return_quantile": -0.017459562954585547,
+    "gaussian_5pct_return_quantile": -0.012194207479809364,
+    "jarque_bera_p_value": 0.0,
+    "jarque_bera_statistic": 4855.088716802972,
+    "maximum": 0.06698175366421415,
+    "mean_daily_return": 0.0005142476346160858,
+    "minimum": -0.05526490994730702,
+    "observation_count": 2054,
+    "return_1pct_absolute_difference": -0.0029310242869596236,
+    "return_1pct_relative_difference": -0.1678750089325589,
+    "return_5pct_absolute_difference": 0.0003513765473008995,
+    "return_5pct_relative_difference": 0.028815037621976947,
+    "skewness": -0.05037699029859355,
+    "volatility": 0.007726192109859013
+  },
+  "final_validation_decision": null,
+  "input_data_hash": "76116af57c526231c62fe83ae2e26e8be41bc5a28a418bbdef5be79fd8b1b08e",
+  "input_data_path": "data/processed/returns.csv",
+  "limitations": [
+    "Public ETF proxies are used instead of real institutional positions.",
+    "The sample is finite and covers one historical market period.",
+    "Regime thresholds are retrospective/descriptive and not causal monitoring thresholds.",
+    "Diagnostics use daily returns and do not address other horizons.",
+    "Conceptual diagnostics do not replace formal outcomes analysis.",
+    "No challenger evidence is produced in Phase 2.",
+    "No independent implementation verification is performed in Phase 2."
+  ],
+  "model_id": "MR-001",
+  "model_name": "Gaussian Parametric VaR / ES",
+  "observation_count": 2054,
+  "phase_2_conclusion": "Conceptual soundness concerns identified.",
+  "portfolio": {
+    "name": "baseline_multi_asset_equal_weight",
+    "strategy": "equal_weight",
+    "weights": {
+      "GLD": 0.25,
+      "QQQ": 0.25,
+      "SPY": 0.25,
+      "TLT": 0.25
+    }
+  },
+  "regime_methodology": {
+    "high_volatility_threshold": 0.008027340487105156,
+    "low_volatility_threshold": 0.00531661417713351,
+    "method": "full_sample_rolling_volatility_quantiles",
+    "note": "Regime thresholds use full-sample rolling volatility quantiles and are not causal monitoring thresholds.",
+    "regime_definition": {
+      "HIGH_VOL": "rolling volatility >= 75th percentile",
+      "LOW_VOL": "rolling volatility <= 25th percentile",
+      "NORMAL_VOL": "25th percentile < rolling volatility < 75th percentile"
+    },
+    "retrospective_descriptive": true,
+    "rolling_window": 60
+  },
+  "tail_comparison": {
+    "empirical_95_loss_quantile": 0.011842830932508461,
+    "empirical_99_loss_quantile": 0.020390587241545202,
+    "frequency_beyond_gaussian_95_loss_threshold": 0.04430379746835443,
+    "frequency_beyond_gaussian_99_loss_threshold": 0.017039922103213243,
+    "gaussian_95_loss_quantile": 0.012194207479809364,
+    "gaussian_99_loss_quantile": 0.017459562954585547,
+    "loss_95_absolute_difference": -0.000351376547300903,
+    "loss_95_relative_difference": -0.028815037621977232,
+    "loss_99_absolute_difference": 0.0029310242869596548,
+    "loss_99_relative_difference": 0.16787500893256072,
+    "observation_count": 2054,
+    "observations_beyond_gaussian_95_loss_threshold": 91,
+    "observations_beyond_gaussian_99_loss_threshold": 35
+  }
+}

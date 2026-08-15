@@ -1,0 +1,102 @@
+validation_id: V2-MR-001-INITIAL
+model_id: MR-001
+model_version: "0.1.0"
+validation_type: initial_v2_validation
+phase: 1
+final_validation_decision: null
+scope:
+  data_assessment:
+    included: true
+    planned_phase: 2
+    description: "Assess data lineage, date alignment, completeness, and suitability for validating MR-001."
+  conceptual_soundness:
+    included: true
+    planned_phase: 2
+    description: "Challenge Gaussian assumptions and document conditions where assumptions are fragile."
+  implementation_verification:
+    included: true
+    planned_phase: 3
+    description: "Compare developer calculations to independent reference calculations without importing production risk metric functions."
+  benchmark_comparison:
+    included: true
+    planned_phase: 4
+    description: "Compare MR-001 against historical simulation, EWMA Gaussian, and filtered historical simulation challengers."
+  outcomes_analysis:
+    included: true
+    planned_phase: 5
+    description: "Evaluate exception frequency, clustering, and exceedance severity."
+  sensitivity_stability:
+    included: true
+    planned_phase: 5
+    description: "Assess sensitivity to windows, confidence levels, EWMA parameters, and portfolio variants."
+  stress_testing:
+    included: true
+    planned_phase: 5
+    description: "Use deterministic stress evidence as context for model limitations and risk interpretation."
+  data_quality_impact:
+    included: true
+    planned_phase: 6
+    description: "Quantify how deterministic data-quality failures propagate into VaR/ES estimates."
+  ongoing_monitoring_design:
+    included: true
+    planned_phase: 7
+    description: "Define reproducible monitoring metrics, thresholds, escalation states, and evidence links."
+evidence_requirements:
+  retain_raw_statistical_outputs: true
+  retain_observed_exception_rates: true
+  require_artifact_traceability: true
+  require_config_traceability: true
+  require_test_traceability: true
+  no_network_dependency_for_core_tests: true
+  no_final_decision_before_phase_8: true
+thresholds:
+  threshold_version: "v2-phase-1"
+  threshold_type: "educational project governance choices"
+  regulatory_disclaimer: "These thresholds are not numerical requirements prescribed by the Fed, OCC, FDIC, Basel Committee, or any real bank."
+  statistical_significance_level: 0.05
+  statistical_interpretation:
+    retain_raw_p_values: true
+    note: "A p-value below 0.05 is evidence of model-performance weakness; it is not automatically a final validation decision."
+  implementation_verification:
+    numeric_abs_tolerance: 1.0e-10
+    required_match_fraction: 1.0
+  challenger_divergence:
+    amber_relative_difference: 0.15
+    red_relative_difference: 0.25
+    interpretation: "Green/Amber/Red indicators are project monitoring conventions, not regulatory grades."
+  data_quality_impact:
+    material_relative_var_change: 0.10
+decision_framework:
+  framework_type: "project validation decision labels"
+  no_decision_assigned_in_phase_1: true
+  allowed_final_decisions:
+    VALIDATED:
+      evidence_logic: "No material unresolved weakness relative to intended use; validation evidence supports fit-for-purpose use; monitoring remains required."
+    VALIDATED_WITH_CONDITIONS:
+      evidence_logic: "Model remains usable for intended purpose, but material limitations or findings require compensating controls, challenger monitoring, remediation, or enhanced monitoring."
+    RESTRICTED_USE:
+      evidence_logic: "Model may only be used for narrower purposes or under explicit restrictions because evidence does not support full intended use."
+    NOT_VALIDATED:
+      evidence_logic: "Unresolved model weaknesses are inconsistent with intended use and controls are insufficient to support continued use under the stated purpose."
+severity_framework:
+  Low:
+    impact_concept: "Documentation or control enhancement with limited model-use impact."
+    remediation_urgency: "Address through routine backlog or next documentation/control update."
+    use_restriction_or_escalation: "No use restriction expected unless combined with other weaknesses."
+  Moderate:
+    impact_concept: "Meaningful weakness requiring remediation or enhanced monitoring."
+    remediation_urgency: "Prioritize remediation plan and track to closure."
+    use_restriction_or_escalation: "Escalate in governance record; conditions may be appropriate depending on evidence."
+  High:
+    impact_concept: "Material model-risk weakness potentially affecting intended use."
+    remediation_urgency: "Prompt remediation and compensating controls expected."
+    use_restriction_or_escalation: "May support conditional validation or restricted use."
+  Critical:
+    impact_concept: "Fundamental defect incompatible with intended use until resolved."
+    remediation_urgency: "Immediate remediation or model-use pause expected in the project decision framework."
+    use_restriction_or_escalation: "Likely restricted use or not validated unless resolved."
+limitations:
+  - "This plan defines validation work before Phase 2+ analytical evidence is generated."
+  - "No final validation decision is assigned in Phase 1."
+  - "No substantive model findings are created in Phase 1."
+  - "The framework is educational and project-specific, not a real bank policy or regulatory compliance claim."
