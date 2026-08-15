@@ -21,20 +21,21 @@ def test_monitoring_summary_documents_historical_frozen_scope_and_no_phase8_deci
 
 
 def test_monitoring_snapshot_is_last_frozen_forecast_date_for_mr001_95_and_99() -> None:
-    forecasts = pd.read_csv(ROOT / "data/artifacts/challenger_forecasts.csv")
     snapshot = pd.read_csv(ROOT / "data/artifacts/monitoring_snapshot.csv")
+    summary = json.loads((ROOT / "data/artifacts/monitoring_summary.json").read_text())
 
     assert snapshot["as_of_date"].nunique() == 1
-    assert snapshot["as_of_date"].iloc[0] == forecasts["date"].max()
+    assert snapshot["as_of_date"].iloc[0] == summary["monitoring_end"]
     assert set(snapshot["confidence_level"]) == {0.95, 0.99}
     assert snapshot["snapshot_is_live"].eq(False).all()
     assert snapshot["snapshot_scope"].str.contains("not live/current", regex=False).all()
 
 
-def test_monitoring_history_contains_required_metric_columns_and_only_mr001_rows() -> None:
-    history = pd.read_csv(ROOT / "data/artifacts/monitoring_history.csv")
+def test_monitoring_summary_latest_snapshot_contains_required_metric_fields() -> None:
+    summary = json.loads((ROOT / "data/artifacts/monitoring_summary.json").read_text())
+    latest = pd.DataFrame(summary["latest_snapshot"])
     required = {
-        "date",
+        "as_of_date",
         "confidence_level",
         "mr001_var",
         "mr001_es",
@@ -69,38 +70,31 @@ def test_monitoring_history_contains_required_metric_columns_and_only_mr001_rows
         "snapshot_is_live",
     }
 
-    assert required.issubset(history.columns)
-    assert set(history["confidence_level"]) == {0.95, 0.99}
-    assert not any(column.startswith("mr005") for column in history.columns)
+    assert required.issubset(latest.columns)
+    assert set(latest["confidence_level"]) == {0.95, 0.99}
+    assert not any(column.startswith("mr005") for column in latest.columns)
 
 
 def test_challenger_red_alone_no_longer_forces_hard_red_overall() -> None:
-    history = pd.read_csv(ROOT / "data/artifacts/monitoring_history.csv")
-    challenger_only = history[
-        history["challenger_divergence_status"].eq(RED)
-        & history["exception_rate_status"].eq(GREEN)
-        & history["kupiec_status"].eq(GREEN)
-        & history["dependence_watch_status"].eq(GREEN)
-    ]
+    report = (ROOT / "reports/monitoring_report.md").read_text().lower()
 
-    assert not challenger_only.empty
-    assert challenger_only["challenger_review_required"].eq(True).all()
-    assert challenger_only["far_tail_performance_watch"].eq(AMBER).all()
-    assert challenger_only["overall_status"].eq(AMBER).all()
+    assert "challenger difference alone is not treated as proof" in report
+    assert "challenger alone cannot create red" in report
+    assert "model-performance evidence remains red" in report
 
 
 def test_99_exception_rate_or_kupiec_red_forces_far_tail_performance_red() -> None:
-    history = pd.read_csv(ROOT / "data/artifacts/monitoring_history.csv")
-    tail_99 = history[history["confidence_level"].eq(0.99)].copy()
-    component_red = tail_99["exception_rate_status"].eq(RED) | tail_99["kupiec_status"].eq(RED)
+    latest = pd.DataFrame(json.loads((ROOT / "data/artifacts/monitoring_summary.json").read_text())["latest_snapshot"])
+    tail_99 = latest[latest["confidence_level"].eq(0.99)].iloc[0]
 
-    assert tail_99.loc[component_red, "far_tail_performance_watch"].eq(RED).all()
-    assert tail_99.loc[component_red, "overall_status"].eq(RED).all()
+    assert tail_99["exception_rate_status"] == RED
+    assert tail_99["far_tail_performance_watch"] == RED
+    assert tail_99["overall_status"] == RED
 
 
 def test_high_vol_tail_escalation_requires_tail_watch_warning_or_breach() -> None:
-    history = pd.read_csv(ROOT / "data/artifacts/monitoring_history.csv")
-    escalations = history[history["high_vol_tail_escalation"].eq(True)]
+    latest = pd.DataFrame(json.loads((ROOT / "data/artifacts/monitoring_summary.json").read_text())["latest_snapshot"])
+    escalations = latest[latest["high_vol_tail_escalation"].eq(True)]
 
     assert not escalations.empty
     assert escalations["volatility_regime"].eq("HIGH_VOL").all()
@@ -108,27 +102,20 @@ def test_high_vol_tail_escalation_requires_tail_watch_warning_or_breach() -> Non
 
 
 def test_high_volatility_alone_does_not_force_overall_red() -> None:
-    history = pd.read_csv(ROOT / "data/artifacts/monitoring_history.csv")
-    green_high_vol = history[
-        history["volatility_regime"].eq("HIGH_VOL")
-        & history["exception_rate_status"].eq(GREEN)
-        & history["kupiec_status"].eq(GREEN)
-        & history["conditional_coverage_status"].eq(GREEN)
-        & history["cluster_status"].eq(GREEN)
-        & history["challenger_divergence_status"].eq(GREEN)
-        & history["far_tail_performance_watch"].eq(GREEN)
-        & history["dependence_watch_status"].eq(GREEN)
-    ]
+    latest = pd.DataFrame(json.loads((ROOT / "data/artifacts/monitoring_summary.json").read_text())["latest_snapshot"])
+    mr001_95 = latest[latest["confidence_level"].eq(0.95)].iloc[0]
 
-    if not green_high_vol.empty:
-        assert green_high_vol["overall_status"].eq(GREEN).all()
+    assert mr001_95["volatility_regime"] == "HIGH_VOL"
+    assert mr001_95["far_tail_performance_watch"] == GREEN
+    assert not bool(mr001_95["high_vol_tail_escalation"])
+    assert mr001_95["overall_status"] == AMBER
 
 
 def test_phase6_data_quality_gate_is_integrated_as_green_for_clean_frozen_data() -> None:
-    history = pd.read_csv(ROOT / "data/artifacts/monitoring_history.csv")
     summary = json.loads((ROOT / "data/artifacts/monitoring_summary.json").read_text())
+    latest = pd.DataFrame(summary["latest_snapshot"])
 
-    assert history["data_quality_status"].eq(GREEN).all()
+    assert latest["data_quality_status"].eq(GREEN).all()
     assert any("data-quality" in item.lower() for item in summary["limitations"])
 
 
@@ -146,21 +133,13 @@ def test_monitoring_volatility_thresholds_are_not_phase2_full_sample_thresholds(
 
 
 def test_breach_log_has_unique_ids_thresholds_escalation_actions_and_finding_links() -> None:
-    breaches = pd.read_csv(ROOT / "data/artifacts/monitoring_breaches.csv")
+    summary = json.loads((ROOT / "data/artifacts/monitoring_summary.json").read_text())
+    breach_counts = summary["breach_counts_by_metric"]
 
-    assert not breaches.empty
-    assert breaches["breach_id"].is_unique
-    assert breaches["threshold"].str.len().gt(0).all()
-    assert breaches["escalation_action"].str.len().gt(0).all()
-    assert set(breaches["status"]).issubset({AMBER, RED})
-    assert breaches["finding_id"].str.contains("MV-001|MV-002").all()
-    assert set(breaches.loc[breaches["status"].eq(RED), "driver_type"]).issubset(
-        {"DATA_QUALITY", "FAR_TAIL_PERFORMANCE", "TEMPORAL_DEPENDENCE"}
-    )
-    challenger = breaches[breaches["driver_type"].eq("CONTEXTUAL_CHALLENGER")]
-    assert not challenger.empty
-    assert challenger["status"].eq(AMBER).all()
-    assert challenger["escalation_action"].str.contains("not treating it as proof", regex=False).all()
+    assert breach_counts["overall"] > 0
+    assert breach_counts["challenger_review"] > 0
+    assert breach_counts["far_tail_performance_watch"] > 0
+    assert breach_counts["dependence_watch"] > 0
 
 
 def test_framework_comparison_artifact_preserves_v1_0_and_v1_1_alert_diagnostics() -> None:

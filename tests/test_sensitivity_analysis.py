@@ -21,6 +21,16 @@ from market_risk_toolkit.validation.sensitivity import (
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def _sensitivity_records() -> pd.DataFrame:
+    summary = json.loads((ROOT / "data/artifacts/sensitivity_summary.json").read_text())
+    records = [
+        *summary["lookback_window"],
+        *summary["ewma_lambda"],
+        *summary["portfolio_composition"]["records"],
+    ]
+    return pd.DataFrame(records)
+
+
 def test_sensitivity_windows_and_confidence_levels_are_predeclared() -> None:
     assert WINDOW_GRID == (125, 250, 500)
     assert SENSITIVITY_CONFIDENCE_LEVELS == (0.95, 0.975, 0.99)
@@ -56,7 +66,7 @@ def test_common_sensitivity_sample_is_date_intersection_across_windows() -> None
 
 
 def test_native_and_common_samples_are_distinguishable_in_generated_artifact() -> None:
-    results = pd.read_csv(ROOT / "data/artifacts/sensitivity_results.csv")
+    results = _sensitivity_records()
     lookback = results[results["analysis_dimension"].eq("lookback_window")]
 
     assert {"native_sample", "common_sensitivity_sample"}.issubset(set(lookback["sample_type"]))
@@ -76,7 +86,7 @@ def test_effective_tail_counts_and_warnings_are_deterministic() -> None:
     )
     assert effective_empirical_tail_observation_count("MR-001", window=125, confidence_level=0.99) is None
 
-    results = pd.read_csv(ROOT / "data/artifacts/sensitivity_results.csv")
+    results = _sensitivity_records()
     limited = results[
         results["effective_tail_observation_count"].notna()
         & (results["effective_tail_observation_count"] < 5.0)
@@ -86,7 +96,7 @@ def test_effective_tail_counts_and_warnings_are_deterministic() -> None:
 
 
 def test_every_predeclared_sensitivity_configuration_is_retained() -> None:
-    results = pd.read_csv(ROOT / "data/artifacts/sensitivity_results.csv")
+    results = _sensitivity_records()
 
     expected_rows = (
         len(WINDOW_GRID) * 4 * len(SENSITIVITY_CONFIDENCE_LEVELS) * 2

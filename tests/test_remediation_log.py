@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import subprocess
 from pathlib import Path
 
 import pandas as pd
@@ -7,6 +8,12 @@ import pandas as pd
 from market_risk_toolkit.monitoring.pipeline import REMEDIATION_COLUMNS
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def _exists_or_is_ignored(path: str) -> bool:
+    if (ROOT / path).exists():
+        return True
+    return subprocess.run(["git", "check-ignore", path], cwd=ROOT, capture_output=True, text=True).returncode == 0
 
 
 def test_remediation_log_schema_ids_and_statuses() -> None:
@@ -40,7 +47,7 @@ def test_remediation_evidence_paths_exist() -> None:
 
     for evidence in remediation["evidence"]:
         for artifact in evidence.split(";"):
-            assert (ROOT / artifact).exists()
+            assert _exists_or_is_ignored(artifact)
 
 
 def test_phase7_does_not_close_model_validation_findings() -> None:

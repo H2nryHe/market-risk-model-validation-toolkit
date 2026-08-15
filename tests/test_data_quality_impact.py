@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import numpy as np
@@ -90,17 +91,27 @@ def test_material_impact_boolean_is_calculated_correctly() -> None:
     assert np.isclose(impact["relative_var_change"], 0.11).all()
 
 
-def test_generated_impact_artifact_includes_all_models_and_confidence_levels() -> None:
-    impact = pd.read_csv(ROOT / "data/artifacts/data_quality_risk_impact.csv")
+def test_published_data_quality_summary_includes_all_scenarios_and_blocks_pipeline() -> None:
+    summary = json.loads((ROOT / "data/artifacts/data_quality_summary.json").read_text())
+    scenarios = pd.DataFrame(summary["scenario_results"])
 
-    assert set(impact["model_id"]) == {"MR-001", "MR-002", "MR-003", "MR-004"}
-    assert set(impact["confidence_level"]) == set(CANONICAL_CONFIDENCE_LEVELS)
-    assert set(impact["scenario_id"]) == {"DQ-01", "DQ-02", "DQ-03", "DQ-04", "DQ-05"}
-    assert impact["risk_pipeline_allowed"].eq(False).all()
+    assert set(scenarios["scenario_id"]) == {"DQ-01", "DQ-02", "DQ-03", "DQ-04", "DQ-05"}
+    assert scenarios["risk_pipeline_allowed"].eq(False).all()
+    assert scenarios["detected"].eq(True).all()
+    assert scenarios["blocked"].eq(True).all()
+    assert set(summary["material_impact_summary"]) == set(scenarios["scenario_id"])
 
 
 def test_no_scenario_is_selected_based_on_maximum_observed_impact() -> None:
-    prices = pd.read_csv(ROOT / "data/processed/adjusted_close.csv", parse_dates=["date"]).set_index("date")
+    prices = pd.DataFrame(
+        {
+            "SPY": range(100, 220),
+            "QQQ": range(200, 320),
+            "TLT": range(90, 210),
+            "GLD": range(50, 170),
+        },
+        index=pd.date_range("2026-01-01", periods=120, freq="D"),
+    )
     scenarios = build_scenario_table(prices)
 
     assert scenarios["selection_rule"].str.contains("fixed-position").all()

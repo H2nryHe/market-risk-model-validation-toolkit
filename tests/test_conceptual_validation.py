@@ -111,23 +111,25 @@ def test_input_series_is_not_mutated_by_rolling_diagnostics() -> None:
     pd.testing.assert_series_equal(returns, original)
 
 
-def test_summary_serialization_is_deterministic() -> None:
+def test_summary_serialization_is_deterministic(tmp_path) -> None:
     index = pd.date_range("2026-01-01", periods=120, freq="D")
     values = np.sin(np.arange(120) / 5.0) / 100.0
     returns = pd.Series(values, index=index, name="portfolio_return")
+    input_data_path = tmp_path / "returns.csv"
+    returns.to_csv(input_data_path)
 
     summary_a, _, _, _ = build_conceptual_summary(
         returns,
         portfolio_name="test_portfolio",
         portfolio_weights={"SPY": 0.25, "QQQ": 0.25, "TLT": 0.25, "GLD": 0.25},
-        input_data_path="data/processed/returns.csv",
+        input_data_path=str(input_data_path),
         rolling_window=20,
     )
     summary_b, _, _, _ = build_conceptual_summary(
         returns,
         portfolio_name="test_portfolio",
         portfolio_weights={"SPY": 0.25, "QQQ": 0.25, "TLT": 0.25, "GLD": 0.25},
-        input_data_path="data/processed/returns.csv",
+        input_data_path=str(input_data_path),
         rolling_window=20,
     )
 

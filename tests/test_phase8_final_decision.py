@@ -89,7 +89,8 @@ def test_release_metrics_match_source_artifacts() -> None:
     metrics = _json("data/artifacts/release_metrics.json")
     implementation = _json("data/artifacts/implementation_verification_summary.json")
     comparison = pd.read_csv(ROOT / "data/artifacts/model_comparison.csv")
-    controls = pd.read_csv(ROOT / "data/artifacts/data_quality_control_results.csv")
+    data_quality = _json("data/artifacts/data_quality_summary.json")
+    scenario_results = pd.DataFrame(data_quality["scenario_results"])
 
     mr001_99 = comparison[
         comparison["model_id"].eq("MR-001") & comparison["confidence_level"].eq(0.99)
@@ -98,13 +99,9 @@ def test_release_metrics_match_source_artifacts() -> None:
     assert metrics["implementation_verification"]["match_fraction"] == implementation["match_fraction"] == 1.0
     assert metrics["mr001_99"]["exception_count"] == int(mr001_99["exception_count"]) == 41
     assert metrics["mr001_99"]["observation_count"] == int(mr001_99["observation_count"]) == 1804
-    assert metrics["data_quality"]["detected"] == int(controls.groupby("scenario_id")["detected"].any().sum()) == 5
-    assert (
-        metrics["data_quality"]["blocked"]
-        == int(controls.groupby("scenario_id")["blocking_control_triggered"].any().sum())
-        == 5
-    )
-    assert metrics["data_quality"]["false_negatives"] == int(controls["false_negative"].sum()) == 0
+    assert metrics["data_quality"]["detected"] == int(scenario_results["detected"].sum()) == 5
+    assert metrics["data_quality"]["blocked"] == int(scenario_results["blocked"].sum()) == 5
+    assert metrics["data_quality"]["false_negatives"] == int(scenario_results["false_negative"].sum()) == 0
 
 
 def test_no_data_quality_finding_is_invented() -> None:
@@ -116,10 +113,10 @@ def test_no_data_quality_finding_is_invented() -> None:
 
 def test_monitoring_latest_date_is_frozen_not_current() -> None:
     metrics = _json("data/artifacts/release_metrics.json")
-    forecasts = pd.read_csv(ROOT / "data/artifacts/challenger_forecasts.csv", usecols=["date"])
+    snapshot = pd.read_csv(ROOT / "data/artifacts/monitoring_snapshot.csv")
     readme = (ROOT / "README.md").read_text().lower()
 
-    assert metrics["monitoring_latest"]["as_of_date"] == forecasts["date"].max()
+    assert metrics["monitoring_latest"]["as_of_date"] == snapshot["as_of_date"].max()
     assert "historical frozen-data evidence" in readme
     assert "not live/current status" in readme
 
